@@ -1,15 +1,10 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
     "configurations": [
-
         {
-            "name": "(gdb) 启动",
+            "name": "cpp",
             "type": "cppdbg",
             "request": "launch",
-            // "program": "输入程序名称，例如 ${workspaceFolder}/a.out",
+            "program": "${fileDirname}/${fileBasenameNoExtension}~", //${fileDirname}/${fileBasenameNoExtension}
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -28,12 +23,12 @@
                     "ignoreFailures": true
                 },
                 {
-                    "description": "Skip system libraries",
-                    "text": "skip -gfi /usr/include/*",
-                    "ignoreFailures": true
+                    "description": "防止gdb打开标准库函数",
+                    "text": "-interpreter-exec console \"skip -rfu std::.*\"",
+                    "ignoreFailures": false
                 }
             ]
         }
-
-    ]
+    ],
+    "version": "2.0.0"
 }
