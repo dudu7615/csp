@@ -1,62 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int maxn = 1e5;
-
 struct Time
 {
-    int come;
-    int go;
+    int come, go;
+    bool operator<(const Time &other) const
+    {
+        return come < other.come;
+    }
 };
 
-Time cn[maxn];
-Time abroad[maxn];
-
-bool canIn(int n, int plainNum, Time plains[])
-/*
-n: 廊桥数（此地）
-plainNum：飞机序号
-plains：此地飞机数组
- */
+int getCanIns(int n, vector<Time> &plains)
 {
-    for (int i = 0; i < plainNum; i++)
+    vector<int> bridges(n, 0); // 每个廊桥的离开时间
+    int inNum = 0;
+    for (Time &plain : plains)
     {
-        if (n > 0)
+        for (int i = 0; i < n; i++)
         {
-            n -= 1;
-            if (plains[i].go < plains[plainNum].come)
+            if (bridges[i] <= plain.come)
             {
-                n += 1;
+                bridges[i] = plain.go;
+                inNum++;
+                break;
             }
         }
     }
-    if (n > 0)
-    {
-        return true;
-    }
-    return false;
-}
-
-int tryCome(int cnN, int m1, int m2)
-// 按照此方法进入的飞机数量
-/*
-cnN: 国内廊桥数
-m: 飞机数量(国内、国际)
- */
-{
-    // 国内停机数
-    for (int i = 0; i < m1; i++)
-    {
-        if (canIn(m1, i, cn))
-        {
-        }
-    }
+    return inNum;
 }
 
 int main()
 {
     int n, m1, m2;
     cin >> n >> m1 >> m2;
+    vector<Time> cn(m1), abroad(m2);
     for (int i = 0; i < m1; i++)
     {
         cin >> cn[i].come >> cn[i].go;
@@ -65,5 +42,18 @@ int main()
     {
         cin >> abroad[i].come >> abroad[i].go;
     }
+
+    sort(cn.begin(), cn.end());
+    sort(abroad.begin(), abroad.end());
+
+    int maxNum = 0;
+    for (int i = 0; i <= n; i++)
+    { // i: 国内廊桥数
+        int cnCount = getCanIns(i, cn);
+        int abrCount = getCanIns(n - i, abroad);
+        maxNum = max(maxNum, cnCount + abrCount);
+    }
+
+    cout << maxNum << endl;
     return 0;
 }
