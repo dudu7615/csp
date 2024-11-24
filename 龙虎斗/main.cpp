@@ -56,8 +56,8 @@ ll tryP2(vector<ll> &c, Gread &g, int m, ll s2)
     return p2;
 }
 
-int main()
-{
+int main() {
+    iostream::sync_with_stdio(false);
     freopen("in", "r", stdin);
     ll n;
     ll m, p1, s1, s2;
