@@ -1,16 +1,19 @@
 #include <bits/stdc++.h>
+#define ci cin>>
+#define co cout<<
 using namespace std;
 
 int main()
 {
     freopen("in", "r", stdin);
     int T, id;
-    cin >> T >> id;
-    for (; T--; T > 0)
+    ci T >> id;
+    while (T--)
     {
         int n, m, c, f;
-        cin >> n >> m >> c >> f;
-        vector<string> str(n,string(m,' '));
+        ci n >> m >> c >> f;
+        vector<string> str(m,string(n,' '));
+        for(string& s:str) ci s;
 
     }
 }
