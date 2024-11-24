@@ -82,5 +82,7 @@
         "numbers": "cpp",
         "ranges": "cpp",
         "span": "cpp"
-    }
+    },
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
+    "C_Cpp.codeAnalysis.runAutomatically": true
 }
