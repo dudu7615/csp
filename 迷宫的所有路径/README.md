@@ -1,0 +1,1 @@
+<https://oj.czos.cn/p/1739>
