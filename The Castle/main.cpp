@@ -31,8 +31,8 @@ void dfs(int x, int y, int& roomSize, vector<vector<int>>& a,
 
 int main() {
     ios::sync_with_stdio(false);
-    // ifstream fin("in");
-    // cin.rdbuf(fin.rdbuf());
+    ifstream fin("in");
+    cin.rdbuf(fin.rdbuf());
     cin.tie(nullptr);
     cout.tie(nullptr);
 
