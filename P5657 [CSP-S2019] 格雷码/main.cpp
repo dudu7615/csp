@@ -28,7 +28,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    // ifstream cin("in3");
+    ifstream cin("in");
 
     ull n, k;
     cin >> n >> k;
