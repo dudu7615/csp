@@ -1,5 +1,3 @@
-#include <fstream>
-#include <vector>
 #include "bits/stdc++.h"
 using namespace std;
 
@@ -12,16 +10,19 @@ using namespace std;
 
 struct Rode {
     int x, y, t;
-    Rode(int x=0, int y=0, int t=0): x(x), y(y), t(t) {}
+    bool operator<(const Rode& o) {
+        return t<o.t;
+    }
+    Rode(int x = 0, int y = 0, int t = 0) : x(x), y(y), t(t) {}
 };
 
 struct Node {
     int parent;
     vector<int> children;
-    Node() : parent(0) {}
+    Node(int p) : parent(p) {}
 };
 
-int find(int x, vector<Node> &tree) {
+int find(int x, vector<Node>& tree) {
     if (tree[x].parent == x) {
         return x;
     } else {
@@ -29,56 +30,57 @@ int find(int x, vector<Node> &tree) {
     }
 }
 
-int merge(int n, vector<Node> &tree) {
-    for (int i = 1; i <= n; i++) {
-        for (int j : tree[i].children) {
-            int fi = find(i, tree);
-            int fj = find(j, tree);
-
-            tree[fj].parent = (fi == fj) ? fj : fi;
-        }
+int merge(int x, int y, vector<Node>& tree) {
+    int px = find(x, tree);
+    int py = find(y, tree);
+    if (px != py) {
+        tree[py].parent = px;
+        tree[px].children.push_back(py);
     }
+
     return 0;
 }
 
+int solve(vector<Rode>& roads, vector<Node>& nodes) {
+    int mmax = 0;
+    for (int i = 1; i < roads.size(); i++) {
+        int px = roads[i].x;
+        int py = roads[i].y;
+        if (px != py) {
+            merge(px, py, nodes);
+            mmax = max(mmax, roads[i].t);
+        }
+    }
 
+    int p = find(1,nodes);
+    for (int i = 1; i < nodes.size(); i++) {
+        if (find(i,nodes) != p) {
+            return -1;
+        }
+    }
+    return mmax;
+}
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    // ifstream cin("in");
+    ifstream cin("in");
 
-    int n,m;
+    int n, m;
     cin >> n >> m;
-    vector<Rode> rodes(m+1);
+    vector<Rode> rodes(m + 1);
     for (int i = 1; i <= m; i++) {
         cin >> rodes[i].x >> rodes[i].y >> rodes[i].t;
     }
+    sort(rodes.begin(),rodes.end());
 
-    vector<Node> tree(n + 1);
-    for (int i = 1; i <= n; i++) {
-        tree[i].parent = i;
-    }
+    vector<Node> nodes(1,Node(0));
     for (int i = 1; i <= m; i++) {
-        int p = rodes[i].x;
-        int c = rodes[i].y;
-        tree[c].parent = p;
-        tree[p].children.push_back(c);
+        nodes.push_back(Node(i));
     }
-    merge(n, tree);
 
-    for(int i=1; i<=n; i++) {
-        for(int j=1; j<=n; j++) {
-            if(find(i, tree) == find(j, tree)) {
-                
-            } else {
-                cout << -1;
-                return 0;
-            }
-        }
-        
-    }
+    cout << solve(rodes, nodes);
 
     return 0;
 }
